@@ -13,7 +13,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication(scanBasePackages = "com.urbanservices")
 @EntityScan(basePackages = "com.urbanservices")
 @EnableJpaRepositories(basePackages = "com.urbanservices")
-@EnableJpaAuditing
 @ConfigurationPropertiesScan
 @EnableAsync
 @EnableDiscoveryClient(autoRegister = false)
