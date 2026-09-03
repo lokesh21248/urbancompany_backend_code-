@@ -1,0 +1,34 @@
+target/
+**/target/
+*.class
+
+# Package Files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Uploaded local media
+uploads/
+**/uploads/
+
+# Virtual Machine crash logs
+hs_err_pid*
+replay_pid*
+
+# Logs
+*.log
+logs/
+**/logs/
+
+# IDE / Editor files
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.vscode/
+.DS_Store
+Thumbs.db

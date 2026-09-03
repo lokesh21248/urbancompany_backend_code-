@@ -1,0 +1,41 @@
+# ============================================================
+# PRODUCTION PROFILE
+# All values injected from environment variables / AWS Secrets Manager
+# Never hard-code credentials here
+# ============================================================
+
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      pool-name: UrbanServicesHikariPool-Prod
+      minimum-idle: 10
+      maximum-pool-size: 50
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+      auto-commit: true
+      # AWS Aurora read replica (optional)
+      # read-only: false
+
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        generate_statistics: false
+
+logging:
+  level:
+    root: WARN
+    com.urbanservices: INFO
+    org.hibernate.SQL: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %-5level [%thread] %logger{36} - %msg%n"
+
+server:
+  forward-headers-strategy: framework    # trust ALB/ECS proxy headers
