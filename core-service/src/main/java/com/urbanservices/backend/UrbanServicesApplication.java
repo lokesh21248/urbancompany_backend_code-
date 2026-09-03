@@ -2,25 +2,21 @@ package com.urbanservices.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-/**
- * Urban Services Platform — Main Application Entry Point
- *
- * <p>Spring Boot 3.x application targeting Java 21.
- * All modules (customer, provider, admin, booking, etc.) are loaded
- * as Spring components within this single deployable JAR.
- *
- * <p>For production deployment on AWS ECS/Fargate, this application must be
- * stateless — no in-memory session state, no local file storage.
- */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.urbanservices")
+@EntityScan(basePackages = "com.urbanservices")
+@EnableJpaRepositories(basePackages = "com.urbanservices")
+@EnableJpaAuditing
 @ConfigurationPropertiesScan
 @EnableAsync
-@EnableDiscoveryClient
+@EnableDiscoveryClient(autoRegister = false)
 @EnableFeignClients
 public class UrbanServicesApplication {
 
