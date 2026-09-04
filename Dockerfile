@@ -16,13 +16,19 @@ RUN mvn clean package -pl core-service -am -DskipTests -B
 FROM eclipse-temurin:17-jre
 WORKDIR /app
 
-# Install bash & curl
-RUN apt-get update && apt-get install -y --no-install-recommends bash curl && rm -rf /var/lib/apt/lists/*
+# Install bash, curl & mariadb-server (provides automatic zero-config DB fallback)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bash \
+    curl \
+    mariadb-server \
+    mariadb-client \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy executable JAR
+# Copy executable JAR and entrypoint script
 COPY --from=build /app/core-service/target/*.jar app.jar
+COPY docker-entrypoint.sh /app/docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh
 
 EXPOSE 8080 10000
 
-# Runs single JVM with Serial GC: uses only ~180MB RAM, perfectly suited for Render 512MB free tier
-CMD java -Xms64m -Xmx300m -XX:+UseSerialGC -Dserver.port=${PORT:-8080} -jar app.jar
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
