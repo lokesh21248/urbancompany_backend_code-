@@ -5,6 +5,11 @@
 # ============================================================
 
 spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
@@ -12,9 +17,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       pool-name: UrbanServicesHikariPool-Prod
-      minimum-idle: 10
-      maximum-pool-size: 50
-      idle-timeout: 600000
+      minimum-idle: 2
+      maximum-pool-size: 10
+      idle-timeout: 300000
       max-lifetime: 1800000
       connection-timeout: 30000
       connection-test-query: SELECT 1

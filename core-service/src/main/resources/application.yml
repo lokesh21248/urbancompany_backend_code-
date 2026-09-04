@@ -8,6 +8,26 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/urban_services_db?useSSL=false&serverTimezone=Asia/Kolkata&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&createDatabaseIfNotExist=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      pool-name: UrbanServicesHikariPool
+      minimum-idle: 1
+      maximum-pool-size: 10
+      idle-timeout: 300000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+      auto-commit: true
+
   application:
     name: core-service
 
@@ -54,8 +74,8 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
     baseline-version: 0
-    validate-on-migrate: true
-    out-of-order: false
+    validate-on-migrate: false
+    out-of-order: true
     encoding: UTF-8
 
   # ── Redis (Lettuce) ─────────────────────────────────────────
@@ -74,7 +94,7 @@ spring:
 
 # ── Server ────────────────────────────────────────────────────
 server:
-  port: ${SERVER_PORT:8081}
+  port: ${PORT:${SERVER_PORT:8080}}
   servlet:
     context-path: /
   compression:
